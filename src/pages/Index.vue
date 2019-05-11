@@ -1,46 +1,51 @@
 <template>
   <q-page padding>
     <div class="q-mb-md">
-      <q-search
+      <q-input
         type="text"
         v-model="searchTerm"
         :debounce="500"
         clearable
-        :float-label="'Search ' + songs.length + ' songs'" />
+        stack-label
+        :label="'Search ' + songs.length + ' songs'" />
     </div>
 
     <div class="q-my-md">
-      <q-list v-if="resultsTitles.length > 0">
-        <q-list-header>
+      <div v-if="resultsTitles.length > 0">
+        <h2 class="text-h5">
           Title Matches
           <q-chip small color="primary" class="shadow-1">{{ resultsTitles.length }}</q-chip>
-        </q-list-header>
-        <q-item
-          v-for="(t, ti) in resultsTitles"
-          :key="ti"
-          link
-          exact
-          :to="{ name: 'Title', params: { title: t.title_std } }"
-        >{{ t.title }}</q-item>
-      </q-list>
-      <p v-else-if="searchTerm">No title matches.</p>
+        </h2>
+        <q-list>
+          <q-item
+            v-for="(t, ti) in resultsTitles"
+            :key="ti"
+            link
+            exact
+            :to="getRouteForResult(t)"
+          >{{ t.title }}</q-item>
+        </q-list>
+      </div>
+      <p v-else-if="searchTermIsValid">No title matches.</p>
     </div>
 
     <div class="q-my-md">
-      <q-list v-if="resultsLyrics.length > 0">
-        <q-list-header>
+      <div v-if="resultsLyrics.length > 0">
+        <h2 class="text-h5">
           Lyrics Matches
           <q-chip small color="primary" class="shadow-1">{{ resultsLyrics.length }}</q-chip>
-        </q-list-header>
-        <q-item
-          v-for="(l, li) in resultsLyrics"
-          :key="li"
-          link
-          exact
-          :to="{ name: 'Title', params: { title: l.title_std } }"
-        >{{ l.title }}</q-item>
-      </q-list>
-      <p v-else-if="searchTerm">No lyrics matches.</p>
+        </h2>
+        <q-list>
+          <q-item
+            v-for="(l, li) in resultsLyrics"
+            :key="li"
+            link
+            exact
+            :to="getRouteForResult(l)"
+          >{{ l.title }}</q-item>
+        </q-list>
+      </div>
+      <p v-else-if="searchTermIsValid">No lyrics matches.</p>
     </div>
   </q-page>
 </template>
@@ -77,9 +82,23 @@ export default {
       resultsLyrics: [],
     };
   },
+  computed: {
+    searchTermIsValid() {
+      return typeof this.searchTerm === 'string' && this.searchTerm.length >= 3;
+    },
+  },
   watch: {
     searchTerm(val) {
-      if (typeof val === 'string' && val.length >= 3) {
+      this.resultsTitles = [];
+      this.resultsLyrics = [];
+
+      if (this.searchTermIsValid) {
+        this.$router.replace({
+          query: Object.assign({}, this.$route.query, {
+            q: this.searchTerm,
+          }),
+        });
+
         const search = standardizeText(val);
         const resultsIndex = [];
         const resultsTitles = this.titles.search(search);
@@ -98,10 +117,31 @@ export default {
           }
         });
       } else {
-        this.resultsTitles = [];
-        this.resultsLyrics = [];
+        this.$router.replace({
+          query: Object.assign({}, this.$route.query, {
+            q: '',
+          }),
+        });
       }
     },
+  },
+  methods: {
+    getRouteForResult(r) {
+      return {
+        name: 'Title',
+        params: {
+          title: r.title_std,
+        },
+        query: {
+          highlight: this.searchTerm,
+        },
+      };
+    },
+  },
+  mounted() {
+    if (this.$route.query.q) {
+      this.searchTerm = this.$route.query.q;
+    }
   },
 };
 </script>
