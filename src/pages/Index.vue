@@ -6,6 +6,7 @@
         v-model="searchTerm"
         :debounce="500"
         clearable
+        clear-icon="ion-ios-close-circle"
         stack-label
         :label="'Search ' + songs.length + ' songs'" />
     </div>

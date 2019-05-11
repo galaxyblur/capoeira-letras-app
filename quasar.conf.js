@@ -10,8 +10,8 @@ module.exports = function exports() {
       'app.styl',
     ],
     extras: [
-      'material-icons', // optional, you are not bound to it
-      // 'ionicons-v4',
+      // 'material-icons', // optional, you are not bound to it
+      'ionicons-v4',
       // 'mdi-v3',
       // 'fontawesome-v5'
     ],
@@ -58,7 +58,7 @@ module.exports = function exports() {
         'QSeparator',
       ],
       directives: [
-        'Ripple',
+        'GoBack',
       ],
       // Quasar plugins
       plugins: [

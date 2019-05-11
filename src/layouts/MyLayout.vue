@@ -3,6 +3,10 @@
 
     <q-header bordered class="bg-primary text-white">
       <q-toolbar>
+        <q-btn
+          v-if="canGoBack"
+          @click="goBack"
+          flat dense icon="ion-ios-arrow-back" />
         <q-toolbar-title>
           Capoeira Letras
           <div slot="subtitle">lyrics database</div>
@@ -22,6 +26,20 @@ export default {
   data() {
     return {
     };
+  },
+  computed: {
+    canGoBack() {
+      return this.$route.path !== '/' && window.history.length > 1;
+    },
+  },
+  methods: {
+    goBack() {
+      if (this.canGoBack) {
+        this.$router.go(-1);
+      } else {
+        this.$router.push('/');
+      }
+    },
   },
 };
 </script>
