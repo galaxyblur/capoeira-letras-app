@@ -56,6 +56,8 @@ module.exports = function exports() {
         'QItemLabel',
         'QItemSection',
         'QSeparator',
+        'QRouteTab',
+        'QTabs',
       ],
       directives: [
         'GoBack',

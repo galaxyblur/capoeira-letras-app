@@ -12,6 +12,12 @@
           <div slot="subtitle">lyrics database</div>
         </q-toolbar-title>
       </q-toolbar>
+
+      <q-tabs align="left">
+        <q-route-tab to="/" label="Search" />
+        <q-route-tab to="/favorites" label="Favorites" />
+        <q-route-tab to="/about" label="About" />
+      </q-tabs>
     </q-header>
 
     <q-page-container>
@@ -23,10 +29,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-    };
-  },
   computed: {
     canGoBack() {
       return this.$route.path !== '/' && window.history.length > 1;
