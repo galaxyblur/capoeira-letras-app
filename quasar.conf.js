@@ -62,6 +62,7 @@ module.exports = function exports() {
       ],
       // Quasar plugins
       plugins: [
+        'LocalStorage',
         'Notify',
       ],
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons-v4'

@@ -24,7 +24,12 @@
             link
             exact
             :to="getRouteForResult(t)"
-          >{{ t.title }}</q-item>
+          >
+            <q-item-section>{{ t.title }}</q-item-section>
+            <q-item-section v-if="isFavorite(t)" avatar>
+              <q-icon name="ion-ios-star" />
+            </q-item-section>
+          </q-item>
         </q-list>
       </div>
       <p v-else-if="searchTermIsValid">No title matches.</p>
@@ -43,7 +48,12 @@
             link
             exact
             :to="getRouteForResult(l)"
-          >{{ l.title }}</q-item>
+          >
+            <q-item-section>{{ l.title }}</q-item-section>
+            <q-item-section v-if="isFavorite(l)" avatar>
+              <q-icon name="ion-ios-star" />
+            </q-item-section>
+          </q-item>
         </q-list>
       </div>
       <p v-else-if="searchTermIsValid">No lyrics matches.</p>
@@ -74,7 +84,10 @@ songs.forEach((s, i) => {
 export default {
   name: 'PageIndex',
   data() {
+    const userSettingsStr = this.$q.localStorage.getItem('user');
+
     return {
+      userSettings: userSettingsStr ? JSON.parse(userSettingsStr) : {},
       searchTerm: '',
       songs,
       titles,
@@ -86,6 +99,9 @@ export default {
   computed: {
     searchTermIsValid() {
       return typeof this.searchTerm === 'string' && this.searchTerm.length >= 3;
+    },
+    hasFav() {
+      return Object.keys(this.userSettings).indexOf('favorites') >= 0;
     },
   },
   watch: {
@@ -137,6 +153,18 @@ export default {
           highlight: this.searchTerm,
         },
       };
+    },
+    saveUserSettings() {
+      this.$q.localStorage.set('user', JSON.stringify(this.userSettings));
+    },
+    isFavorite(song) {
+      if (!this.hasFav) {
+        this.$set(this.userSettings, 'favorites', []);
+      }
+
+      this.saveUserSettings();
+
+      return this.userSettings.favorites.indexOf(song.title_std) >= 0;
     },
   },
   mounted() {
