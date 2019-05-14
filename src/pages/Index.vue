@@ -26,8 +26,11 @@
             :to="getRouteForResult(t)"
           >
             <q-item-section>{{ t.title }}</q-item-section>
-            <q-item-section v-if="isFavorite(t)" avatar>
-              <q-icon name="ion-ios-star" />
+            <q-item-section side>
+              <q-icon v-if="isFavorite(t)" name="ion-ios-star" />
+            </q-item-section>
+            <q-item-section side>
+              <q-icon name="ion-ios-arrow-forward" />
             </q-item-section>
           </q-item>
         </q-list>
@@ -50,8 +53,11 @@
             :to="getRouteForResult(l)"
           >
             <q-item-section>{{ l.title }}</q-item-section>
-            <q-item-section v-if="isFavorite(l)" avatar>
-              <q-icon name="ion-ios-star" />
+            <q-item-section side>
+              <q-icon v-if="isFavorite(l)" name="ion-ios-star" />
+            </q-item-section>
+            <q-item-section side>
+              <q-icon name="ion-ios-arrow-forward" />
             </q-item-section>
           </q-item>
         </q-list>

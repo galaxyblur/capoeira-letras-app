@@ -17,6 +17,9 @@
             :to="getRouteForResult(getSongFromKey(f))"
           >
             <q-item-section>{{ getSongFromKey(f).title }}</q-item-section>
+            <q-item-section side>
+              <q-icon name="ion-ios-arrow-forward" />
+            </q-item-section>
           </q-item>
         </q-list>
       </div>
