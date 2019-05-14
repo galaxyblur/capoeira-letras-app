@@ -109,6 +109,9 @@ export default {
     hasFav() {
       return Object.keys(this.userSettings).indexOf('favorites') >= 0;
     },
+    hasLastSearch() {
+      return Object.keys(this.userSettings).indexOf('lastSearch') >= 0;
+    },
   },
   watch: {
     searchTerm(val) {
@@ -116,13 +119,16 @@ export default {
       this.resultsLyrics = [];
 
       if (this.searchTermIsValid) {
+        const search = standardizeText(val);
+
         this.$router.replace({
           query: Object.assign({}, this.$route.query, {
-            q: this.searchTerm,
+            q: search,
           }),
         });
 
-        const search = standardizeText(val);
+        this.updateLastSearch(search);
+
         const resultsIndex = [];
         const resultsTitles = this.titles.search(search);
 
@@ -145,6 +151,8 @@ export default {
             q: '',
           }),
         });
+
+        this.updateLastSearch('');
       }
     },
   },
@@ -172,10 +180,26 @@ export default {
 
       return this.userSettings.favorites.indexOf(song.title_std) >= 0;
     },
+    updateLastSearch(term) {
+      this.$set(this.userSettings, 'lastSearch', term);
+      this.saveUserSettings();
+    },
   },
   mounted() {
     if (this.$route.query.q) {
-      this.searchTerm = this.$route.query.q;
+      this.searchTerm = standardizeText(this.$route.query.q);
+    } else if (this.userSettings.lastSearch) {
+      this.searchTerm = standardizeText(this.userSettings.lastSearch);
+    }
+
+    if (this.searchTerm) {
+      this.$router.replace({
+        query: Object.assign({}, this.$route.query, {
+          q: this.searchTerm,
+        }),
+      });
+
+      this.updateLastSearch(this.searchTerm);
     }
   },
 };
