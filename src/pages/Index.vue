@@ -12,57 +12,63 @@
     </div>
 
     <div class="q-my-md">
-      <div v-if="resultsTitles.length > 0">
-        <h2 class="text-h5">
-          Title Matches
-          <q-chip small color="primary" class="shadow-1">{{ resultsTitles.length }}</q-chip>
-        </h2>
-        <q-list>
-          <q-item
-            v-for="(t, ti) in resultsTitles"
-            :key="ti"
-            link
-            exact
-            :to="getRouteForResult(t)"
-          >
-            <q-item-section v-html="highlightSearchTerm(t.title)"></q-item-section>
-            <q-item-section side>
-              <q-icon v-if="isFavorite(t)" name="ion-ios-star" />
-            </q-item-section>
-            <q-item-section side>
-              <q-icon name="ion-ios-arrow-forward" />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </div>
-      <p v-else-if="searchTermIsValid">No title matches.</p>
-    </div>
+      <q-list>
 
-    <div class="q-my-md">
-      <div v-if="resultsLyrics.length > 0">
-        <h2 class="text-h5">
-          Lyrics Matches
-          <q-chip small color="primary" class="shadow-1">{{ resultsLyrics.length }}</q-chip>
-        </h2>
-        <q-list>
-          <q-item
-            v-for="(l, li) in resultsLyrics"
-            :key="li"
-            link
-            exact
-            :to="getRouteForResult(l)"
-          >
-            <q-item-section>{{ l.title }}</q-item-section>
-            <q-item-section side>
-              <q-icon v-if="isFavorite(l)" name="ion-ios-star" />
-            </q-item-section>
-            <q-item-section side>
-              <q-icon name="ion-ios-arrow-forward" />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </div>
-      <p v-else-if="searchTermIsValid">No lyrics matches.</p>
+        <q-expansion-item
+          v-if="resultsTitles.length > 0"
+          default-opened
+          header-class="text-h6"
+          expand-icon="ion-ios-arrow-down"
+          :label="'Song Titles (' + resultsTitles.length + ')'"
+        >
+          <q-list separator>
+            <q-item
+              v-for="(t, ti) in resultsTitles"
+              :key="ti"
+              link
+              exact
+              :to="getRouteForResult(t)"
+            >
+              <q-item-section v-html="highlightSearchTerm(t.title)"></q-item-section>
+              <q-item-section side>
+                <q-icon v-if="isFavorite(t)" name="ion-ios-star" />
+              </q-item-section>
+              <q-item-section side>
+                <q-icon name="ion-ios-arrow-forward" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-expansion-item>
+        <q-item v-else-if="searchTermIsValid">No title matches.</q-item>
+
+        <q-expansion-item
+          v-if="resultsLyrics.length > 0"
+          default-opened
+          header-class="text-h6"
+          expand-icon="ion-ios-arrow-down"
+          :label="'Song Lyrics (' + resultsLyrics.length + ')'"
+        >
+          <q-list separator>
+            <q-item
+              v-for="(l, li) in resultsLyrics"
+              :key="li"
+              link
+              exact
+              :to="getRouteForResult(l)"
+            >
+              <q-item-section>{{ l.title }}</q-item-section>
+              <q-item-section side>
+                <q-icon v-if="isFavorite(l)" name="ion-ios-star" />
+              </q-item-section>
+              <q-item-section side>
+                <q-icon name="ion-ios-arrow-forward" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-expansion-item>
+        <q-item v-else-if="searchTermIsValid">No lyrics matches.</q-item>
+
+      </q-list>
     </div>
   </q-page>
 </template>

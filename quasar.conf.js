@@ -41,6 +41,7 @@ module.exports = function exports() {
     framework: {
       components: [
         'QChip',
+        'QExpansionItem',
         'QInput',
         'QLayout',
         'QHeader',
