@@ -3,14 +3,22 @@
     <div v-if="displaySong">
       <div class="row items-center">
         <div class="col">
-          <h5>
-            {{ displaySong.title }}
-          </h5>
+          <h5>{{ displaySong.title }}</h5>
         </div>
         <div class="col-2 text-right">
-          <q-btn v-if="isFavorite" flat icon="ion-ios-star" color="yellow-14"
-            @click="removeFavorite" />
-          <q-btn v-else flat icon="ion-ios-star-outline" @click="addFavorite" />
+          <q-btn
+            v-if="isFavorite"
+            flat
+            icon="ion-ios-star"
+            color="yellow-14"
+            @click="removeFavorite"
+          />
+          <q-btn
+            v-else
+            flat
+            icon="ion-ios-star-outline"
+            @click="addFavorite"
+          />
         </div>
       </div>
       <p class="q-my-md" v-html="formatSongText(displaySong.text)"></p>

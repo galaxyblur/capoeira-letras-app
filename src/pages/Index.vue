@@ -41,6 +41,8 @@
         </q-expansion-item>
         <q-item v-else-if="searchTermIsValid">No title matches.</q-item>
 
+        <q-separator spaced color="grey-9" />
+
         <q-expansion-item
           v-if="resultsLyrics.length > 0"
           default-opened

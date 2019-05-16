@@ -1,29 +1,32 @@
 <template>
   <q-page padding>
     <div class="q-my-md">
-      <div v-if="userSettings.favorites.length > 0">
-        <h2 class="text-h5">
-          Favorites
-          <q-chip small color="primary" class="shadow-1">
-            {{ userSettings.favorites.length }}
-          </q-chip>
-        </h2>
-        <q-list>
-          <q-item
-            v-for="(f, fi) in userSettings.favorites"
-            :key="fi"
-            link
-            exact
-            :to="getRouteForResult(getSongFromKey(f))"
-          >
-            <q-item-section>{{ getSongFromKey(f).title }}</q-item-section>
-            <q-item-section side>
-              <q-icon name="ion-ios-arrow-forward" />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </div>
-      <p v-else>No favorites found.</p>
+      <q-list>
+
+        <q-expansion-item
+          v-if="userSettings.favorites.length > 0"
+          default-opened
+          header-class="text-h6"
+          expand-icon="ion-ios-arrow-down"
+          :label="'Favorites (' + userSettings.favorites.length + ')'"
+        >
+          <q-list separator>
+            <q-item
+              v-for="(f, fi) in userSettings.favorites"
+              :key="fi"
+              link
+              exact
+              :to="getRouteForResult(getSongFromKey(f))"
+            >
+              <q-item-section>{{ getSongFromKey(f).title }}</q-item-section>
+              <q-item-section side>
+                <q-icon name="ion-ios-arrow-forward" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-expansion-item>
+        <q-item v-else>No favorites found.</q-item>
+      </q-list>
     </div>
   </q-page>
 </template>
