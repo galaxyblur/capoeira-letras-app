@@ -15,7 +15,7 @@
       </div>
       <p class="q-my-md">
         <template v-for="(line, key) in displaySong.text.split('\n')">
-          {{ line }}<br :key="key">
+          <span v-html="highlightSearchTerm(line)" :key="key"></span><br :key="key">
         </template>
       </p>
     </div>
@@ -92,6 +92,16 @@ export default {
       this.$q.notify({
         message: `Removed "${this.displaySong.title}" from favorites`,
       });
+    },
+    highlightSearchTerm(txt) {
+      let highlightedTxt = txt;
+
+      if (this.userSettings.lastSearch) {
+        const regex = new RegExp(`(${this.userSettings.lastSearch})`, 'gi');
+        highlightedTxt = `<span>${txt.replace(regex, '<b>$1</b>')}</span>`;
+      }
+
+      return highlightedTxt;
     },
   },
 };

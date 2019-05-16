@@ -25,7 +25,7 @@
             exact
             :to="getRouteForResult(t)"
           >
-            <q-item-section>{{ t.title }}</q-item-section>
+            <q-item-section v-html="highlightSearchTerm(t.title)"></q-item-section>
             <q-item-section side>
               <q-icon v-if="isFavorite(t)" name="ion-ios-star" />
             </q-item-section>
@@ -163,9 +163,6 @@ export default {
         params: {
           title: r.title_std,
         },
-        query: {
-          highlight: this.searchTerm,
-        },
       };
     },
     saveUserSettings() {
@@ -183,6 +180,16 @@ export default {
     updateLastSearch(term) {
       this.$set(this.userSettings, 'lastSearch', term);
       this.saveUserSettings();
+    },
+    highlightSearchTerm(txt) {
+      let highlightedTxt = txt;
+
+      if (this.userSettings.lastSearch) {
+        const regex = new RegExp(`(${this.userSettings.lastSearch})`, 'gi');
+        highlightedTxt = `<span>${txt.replace(regex, '<b>$1</b>')}</span>`;
+      }
+
+      return highlightedTxt;
     },
   },
   mounted() {
