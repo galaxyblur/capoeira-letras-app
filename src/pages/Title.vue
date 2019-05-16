@@ -13,11 +13,7 @@
           <q-btn v-else flat icon="ion-ios-star-outline" @click="addFavorite" />
         </div>
       </div>
-      <p class="q-my-md">
-        <template v-for="(line, key) in displaySong.text.split('\n')">
-          <span v-html="highlightSearchTerm(line)" :key="key"></span><br :key="key">
-        </template>
-      </p>
+      <p class="q-my-md" v-html="formatSongText(displaySong.text)"></p>
     </div>
   </q-page>
 </template>
@@ -52,6 +48,19 @@ export default {
     this.setSong();
   },
   methods: {
+    formatSongText(txt) {
+      return this.highlightSearchTerm(txt).replace(/(?:\r\n|\r|\n)/g, '<br>');
+    },
+    highlightSearchTerm(txt) {
+      let highlightedTxt = txt;
+
+      if (this.userSettings.lastSearch) {
+        const regex = new RegExp(`(${this.userSettings.lastSearch})`, 'gi');
+        highlightedTxt = `<span>${txt.replace(regex, '<b>$1</b>')}</span>`;
+      }
+
+      return highlightedTxt;
+    },
     setSong() {
       const { title } = this.$route.params;
 
@@ -92,16 +101,6 @@ export default {
       this.$q.notify({
         message: `Removed "${this.displaySong.title}" from favorites`,
       });
-    },
-    highlightSearchTerm(txt) {
-      let highlightedTxt = txt;
-
-      if (this.userSettings.lastSearch) {
-        const regex = new RegExp(`(${this.userSettings.lastSearch})`, 'gi');
-        highlightedTxt = `<span>${txt.replace(regex, '<b>$1</b>')}</span>`;
-      }
-
-      return highlightedTxt;
     },
   },
 };
