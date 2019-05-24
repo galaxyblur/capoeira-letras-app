@@ -13,10 +13,10 @@
         </q-toolbar-title>
       </q-toolbar>
 
-      <q-tabs align="left">
-        <q-route-tab to="/" label="Search" />
-        <q-route-tab to="/favorites" label="Favorites" />
-        <q-route-tab to="/about" label="About" />
+      <q-tabs align="left" inline-label>
+        <q-route-tab to="/" label="Search" icon="ion-ios-search" />
+        <q-route-tab to="/favorites" label="Favorites" icon="ion-ios-star" />
+        <q-route-tab to="/about" label="About" icon="ion-ios-information-circle-outline" />
       </q-tabs>
     </q-header>
 
