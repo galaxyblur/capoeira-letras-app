@@ -11,7 +11,7 @@
         :label="'Search ' + songs.length + ' songs'" />
     </div>
 
-    <div class="q-my-md">
+    <div class="q-my-md" v-if="resultsTitles.length > 0 || resultsLyrics.length > 0">
       <q-list>
 
         <q-expansion-item
